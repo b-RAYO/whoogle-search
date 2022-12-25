@@ -1,6 +1,6 @@
 from app.filter import clean_query
 from app.request import send_tor_signal
-from app.utils.session import generate_user_key
+from app.utils.session import generate_key
 from app.utils.bangs import gen_bangs_json
 from app.utils.misc import gen_file_hash, read_config_bool
 from base64 import b64encode
@@ -31,7 +31,7 @@ dot_env_path = (
 if read_config_bool('WHOOGLE_DOTENV'):
     load_dotenv(dot_env_path)
 
-app.default_key = generate_user_key()
+app.enc_key = generate_key()
 
 if read_config_bool('HTTPS_ONLY'):
     app.config['SESSION_COOKIE_NAME'] = '__Secure-session'
@@ -52,6 +52,9 @@ app.config['LANGUAGES'] = json.load(open(
     encoding='utf-8'))
 app.config['COUNTRIES'] = json.load(open(
     os.path.join(app.config['STATIC_FOLDER'], 'settings/countries.json'),
+    encoding='utf-8'))
+app.config['TIME_PERIODS'] = json.load(open(
+    os.path.join(app.config['STATIC_FOLDER'], 'settings/time_periods.json'),
     encoding='utf-8'))
 app.config['TRANSLATIONS'] = json.load(open(
     os.path.join(app.config['STATIC_FOLDER'], 'settings/translations.json'),
